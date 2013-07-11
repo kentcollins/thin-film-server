@@ -5,7 +5,7 @@ app.use(express.logger());
 
 app.get('/', function(request, response) {
   var s = new thinfilm.Source("IR", 1.5, 0.0);
-  response.send('Hello World! >'+s);
+  response.send('Hello World! >'+s.name);
 });
 
 var port = process.env.PORT || 5000;
