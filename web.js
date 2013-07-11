@@ -1,5 +1,5 @@
 var express = require("express");
-var thinfilm = require("./thinfilm");
+var thinfilm = require("./thinfilm.js");
 var app = express();
 app.use(express.logger());
 
