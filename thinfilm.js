@@ -95,3 +95,9 @@ function getQuarterThickness(wavelength, index){
 function getHalfThickness(wavelength, index){
   return wavelength/index/2;
 }
+
+exports.Source = Source;
+exports.Layer = Layer;
+exports.System = System;
+exports.getQuarterThickness = getQuarterThickness;
+exports.getHalfThickness = getHalfThickness;
