@@ -1,0 +1,11 @@
+{
+  "name": "thinfilmjs",
+  "version": "0.0.1",
+  "dependencies": {
+    "mathjs": "0.10.x"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.2.x"
+  }
+}
