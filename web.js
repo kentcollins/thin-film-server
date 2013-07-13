@@ -3,9 +3,10 @@ var thinfilm = require("./thinfilm.js");
 var app = express();
 app.use(express.logger());
 
-app.get('/', function(request, response) {
-  var s = new thinfilm.Source("IR", 1.5, 0.0);
-  response.send('Hello World! >'+s.name);
+app.get('/', function(request, response){
+  var includetext1='<script src="thinfilm.js"></script>';
+  var includetext2='<script src="http://mathjs.org/js/lib/math.js"></script>';
+  response.send(includetext1+includetext2+'Hello World! > ');
 });
 
 var port = process.env.PORT || 5000;
