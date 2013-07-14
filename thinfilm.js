@@ -1,5 +1,21 @@
-var math = require('mathjs');
+(function() {
+/**
+ * Define namespace
+ */
+var thinfilm = {
+    type: {},
+    expr: {
+        node: {
+            handlers: {}
+        }
+    },
+    docs: {},
+    options: {
+        precision: 5  // number of digits in formatted output
+    }
+};
 
+var math = require('mathjs');
 var PERMITTIVITY = 8.854157e-12;
 var PERMEABILITY = 4e-7 * Math.PI;
 var EM_CONSTANT = Math.sqrt(PERMITTIVITY*PERMEABILITY);
@@ -12,12 +28,14 @@ function Source(name, wavelength, angle) {
   this.wavelength = wavelength;
   this.angle = angle;
 }
+thinfilm.Source = Source;
 
 function Layer(name, index, thickness){
   this.name = name;
   this.index = index;
   this.thickness = thickness;
 }
+thinfilm.Layer = Layer;
 
 function System(source, layers){
   this.source = source;
@@ -25,15 +43,18 @@ function System(source, layers){
   this.matrix = getSystemTransferMatrix(this);
   this.reflectance = getSystemReflectance(this);
 }
+thinfilm.System = System;
 
 function getAngleInLayer(source, layer){
   return Math.asin(Math.sin(source.angle)/layer.index);
 }
+thinfilm.getAngleInLayer = getAngleInLayer;
 
 function getGamma(source, layer){
   var angle = getAngleInLayer(source, layer);
   return layer.index*EM_CONSTANT*Math.cos(angle);
 }
+thinfilm.getGamma = getGamma;
 
 // phase difference for single layer
 // assumes the radiation source expresses wavelength in vacuum
@@ -46,6 +67,7 @@ function getPhaseDifference(source, layer){
   var shift = k * opd;
   return shift;
 }
+thinfilm.getPhaseDifference = getPhaseDifference;
 
 function getLayerTransferMatrix(source, layer){
   var angle = getAngleInLayer(source, layer);
@@ -58,6 +80,8 @@ function getLayerTransferMatrix(source, layer){
   var matrix = math.matrix([[m11, m12],[m21, m22]]);
   return matrix;
 }
+thinfilm.getLayerTransferMatrix = getLayerTransferMatrix;
+
 function getSystemTransferMatrix(system) {
   var layers = system.layers;
   var source = system.source;
@@ -68,6 +92,7 @@ function getSystemTransferMatrix(system) {
   }
   return transfer;
 }
+thinfilm.getSystemTransferMatrix = getSystemTransferMatrix;
 
 function getSystemReflectance(system){
   var layers = system.layers;
@@ -87,17 +112,47 @@ function getSystemReflectance(system){
   var R = math.multiply(r, math.conj(r)).re;
   return R;
 }
+thinfilm.getSystemReflectance = getSystemReflectance;
 
 function getQuarterThickness(wavelength, index){
   return wavelength/index/4;
 }
+thinfilm.getQuarterThickness = getQuarterThickness;
 
 function getHalfThickness(wavelength, index){
   return wavelength/index/2;
 }
+thinfilm.getHalfThickness = getHalfThickness;
 
-exports.Source = Source;
-exports.Layer = Layer;
-exports.System = System;
-exports.getQuarterThickness = getQuarterThickness;
-exports.getHalfThickness = getHalfThickness;
+/**
+ * CommonJS module exports
+ */
+if ((typeof module !== 'undefined') && (typeof module.exports !== 'undefined')) {
+    module.exports = thinfilm;
+}
+if (typeof exports !== 'undefined') {
+    exports = thinfilm;
+}
+
+/**
+ * AMD module exports
+ */
+if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
+    define(function () {
+        return thinfilm;
+    });
+}
+
+/**
+ * Browser exports
+ */
+if (typeof(window) != 'undefined') {
+    if (window['thinfilm']) {
+        util.deepExtend(window['thinfilm'], thinfilm);
+    }
+    else {
+        window['thinfilm'] = thinfilm;
+    }
+}
+
+})();
