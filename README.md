@@ -1,4 +1,4 @@
-ThinFilmJS
+thin-film-server
 ==========
 
-Library for modeling thin film layers and determining their reflectance.
+Heroku application for displaying and interacting with the thin film lab javascript module.
