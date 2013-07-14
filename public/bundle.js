@@ -11910,6 +11910,7 @@ thinfilm.getSystemTransferMatrix = getSystemTransferMatrix;
 
 function getSystemReflectance(system){
   var layers = system.layers;
+  var source = system.source;
   var gamma0 = getGamma(source, layers[0]);
   var gammaS = getGamma(source, layers[layers.length-1]);
   var m11 = system.matrix.get([1,1]);
@@ -11986,8 +11987,16 @@ var thinfilm = require('thinfilm');
 var $ = require('./jquery-2.0.2.min.js');
 
 $(document).ready(function() {
-  var mark = thinfilm.PERMITTIVITY;
-  document.write("I made it "+mark);
+  var source = new thinfilm.Source("Visible", .5893, 0);
+  var layer1 = new thinfilm.Layer("Air", 1.0, 0);
+  var layer2 = new thinfilm.Layer("ZrO2", 2.10, 0.04);
+  var layer3 = new thinfilm.Layer("Glass", 1.52, 0);
+  var layers = [];
+  layers.push(layer1);
+  layers.push(layer2);
+  layers.push(layer3);
+  var system = new thinfilm.System(source, layers);
+  document.write("I made it "+system.reflectance);
 });
 
 
