@@ -1,0 +1,10 @@
+var math = require('mathjs');
+var thinfilm = require('thinfilm');
+var $ = require('./jquery-2.0.2.min.js');
+
+var mark;
+
+$(document).ready(function() {
+  mark = thinfilm.PERMITTIVITY;
+});
+

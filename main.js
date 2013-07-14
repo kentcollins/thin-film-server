@@ -1,2 +1,0 @@
-var thinfilm = require('thinfilm');
-
